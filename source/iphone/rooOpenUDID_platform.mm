@@ -43,12 +43,10 @@ const char * rooOpenUDID_getValue_platform()
 
     {
         NSString* s1 = [OpenUDID value];
-        s3eDebugOutputString("5");
         if(g_rooOpenUDID_str)
             free((void*)g_rooOpenUDID_str);
         g_rooOpenUDID_str = strdup([s1 UTF8String]);
         s3eDebugOutputString(g_rooOpenUDID_str);
-        s3eDebugOutputString("5");
         
     }
     return g_rooOpenUDID_str;

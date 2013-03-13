@@ -1,0 +1,5 @@
+build_rooopenudid_android_java
+build_rooopenudid_android_linux_scons_arm
+build_rooopenudid_iphone_iphone_scons_arm
+build_rooopenudid_iphone_iphone_scons_x86
+build_rooopenudid_osx_osx_xcode_x86

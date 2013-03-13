@@ -7,7 +7,10 @@
  * be overwritten (unless --force is specified) and is intended to be modified.
  */
 #include "rooOpenUDID_internal.h"
+#include <time.h>
+#include <stdio.h>
 
+char g_rooOpenUDID_str[128] = {0}; 
 s3eResult rooOpenUDIDInit_platform()
 {
     // Add any platform-specific initialisation code here
@@ -30,5 +33,8 @@ bool rooOpenUDID_isInitialized_platform()
 
 const char * rooOpenUDID_getValue_platform()
 {
-    return NULL;
+    time_t t;
+    time( &t );
+    snprintf( &g_rooOpenUDID_str[0], 128, "%d", (int)t );
+    return g_rooOpenUDID_str;
 }
