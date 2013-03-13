@@ -5,6 +5,8 @@
 
 #include "s3eExt.h"
 #include "IwDebug.h"
+#include "s3eDevice.h"
+
 
 #include "rooOpenUDID.h"
 
@@ -38,7 +40,8 @@ static bool _extLoad()
         if (res == S3E_RESULT_SUCCESS)
             g_GotExt = true;
         else
-            s3eDebugAssertShow(S3E_MESSAGE_CONTINUE_STOP_IGNORE, "error loading extension: rooOpenUDID");
+            s3eDebugAssertShow(S3E_MESSAGE_CONTINUE_STOP_IGNORE,                 "error loading extension: rooOpenUDID");
+            
         g_TriedExt = true;
         g_TriedNoMsgExt = true;
     }
@@ -74,7 +77,19 @@ void rooOpenUDID_init()
     if (!_extLoad())
         return;
 
+#ifdef __mips
+    // For MIPs platform we do not have asm code for stack switching 
+    // implemented. So we make LoaderCallStart call manually to set GlobalLock
+    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+#endif
+
     g_Ext.m_rooOpenUDID_init();
+
+#ifdef __mips
+    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+#endif
+
+    return;
 }
 
 bool rooOpenUDID_isInitialized()
@@ -84,7 +99,19 @@ bool rooOpenUDID_isInitialized()
     if (!_extLoad())
         return false;
 
-    return g_Ext.m_rooOpenUDID_isInitialized();
+#ifdef __mips
+    // For MIPs platform we do not have asm code for stack switching 
+    // implemented. So we make LoaderCallStart call manually to set GlobalLock
+    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+#endif
+
+    bool ret = g_Ext.m_rooOpenUDID_isInitialized();
+
+#ifdef __mips
+    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+#endif
+
+    return ret;
 }
 
 const char * rooOpenUDID_getValue()
@@ -94,5 +121,17 @@ const char * rooOpenUDID_getValue()
     if (!_extLoad())
         return NULL;
 
-    return g_Ext.m_rooOpenUDID_getValue();
+#ifdef __mips
+    // For MIPs platform we do not have asm code for stack switching 
+    // implemented. So we make LoaderCallStart call manually to set GlobalLock
+    s3eDeviceLoaderCallStart(S3E_TRUE, NULL);
+#endif
+
+    const char * ret = g_Ext.m_rooOpenUDID_getValue();
+
+#ifdef __mips
+    s3eDeviceLoaderCallDone(S3E_TRUE, NULL);
+#endif
+
+    return ret;
 }
